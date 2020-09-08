@@ -22,7 +22,6 @@ import br.com.devpaulo.legendchat.api.Legendchat;
 import br.com.devpaulo.legendchat.channels.types.BungeecordChannel;
 import br.com.devpaulo.legendchat.channels.types.PermanentChannel;
 import br.com.devpaulo.legendchat.listeners.Listeners;
-import br.com.devpaulo.legendchat.listeners.Listeners_old;
 
 public class Main extends JavaPlugin implements PluginMessageListener
 {
@@ -33,7 +32,7 @@ public class Main extends JavaPlugin implements PluginMessageListener
   public static boolean block_perms = false;
   public static boolean block_chat = false;
   public static boolean bungeeActive = false;
-  public static String language = "en";
+  public static String language = "br";
 
   @Override
   public void onEnable()
@@ -48,14 +47,7 @@ public class Main extends JavaPlugin implements PluginMessageListener
     getServer().getPluginCommand("ignore").setExecutor(new IgnoreCommand());
     getServer().getPluginCommand("mute").setExecutor(new MuteCommand());
 
-		if (getConfig().getBoolean("use_async_chat_event", true))
-		{
-			getServer().getPluginManager().registerEvents(new Listeners(), this);
-		}
-		else
-		{
-			getServer().getPluginManager().registerEvents(new Listeners_old(), this);
-		}
+    getServer().getPluginManager().registerEvents(new Listeners(), this);
 
     getServer().getMessenger().registerOutgoingPluginChannel(this, "Legendchat");
     getServer().getMessenger().registerIncomingPluginChannel(this, "Legendchat", this);
@@ -111,26 +103,6 @@ public class Main extends JavaPlugin implements PluginMessageListener
       {
         saveResource("language" + File.separator + "language_en.yml", false);
         getLogger().info("Saved language_en.yml");
-      }
-    } catch (Exception e)
-    {
-    }
-    try
-    {
-      if (!new File(getDataFolder(), "language" + File.separator + "language_cn.yml").exists())
-      {
-        saveResource("language" + File.separator + "language_cn.yml", false);
-        getLogger().info("Saved language_cn.yml");
-      }
-    } catch (Exception e)
-    {
-    }
-    try
-    {
-      if (!new File(getDataFolder(), "temporary_channels.yml").exists())
-      {
-        saveResource("temporary_channels.yml", false);
-        getLogger().info("Saved temporary_channels.yml");
       }
     } catch (Exception e)
     {
