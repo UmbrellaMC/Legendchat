@@ -52,15 +52,6 @@ public class Main extends JavaPlugin implements PluginMessageListener
     getServer().getMessenger().registerOutgoingPluginChannel(this, "Legendchat");
     getServer().getMessenger().registerIncomingPluginChannel(this, "Legendchat", this);
 
-    boolean check_update = true;
-		if (getConfig().contains("check_for_updates"))
-		{
-			if (!getConfig().getBoolean("check_for_updates"))
-			{
-				check_update = false;
-			}
-		}
-
     File file = new File(getDataFolder(), "config.yml");
     if (!file.exists())
     {
