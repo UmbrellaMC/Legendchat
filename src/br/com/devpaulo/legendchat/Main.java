@@ -32,7 +32,6 @@ public class Main extends JavaPlugin implements PluginMessageListener
   public static boolean block_perms = false;
   public static boolean block_chat = false;
   public static boolean bungeeActive = false;
-  public static String language = "br";
 
   @Override
   public void onEnable()
@@ -66,34 +65,12 @@ public class Main extends JavaPlugin implements PluginMessageListener
     }
     reloadConfig();
 
-    new File(getDataFolder(), "language").mkdir();
-    for (File f : getDataFolder().listFiles())
-			if (f.getName().startsWith("language_"))
-			{
-				try
-				{
-					Files.move(new File(getDataFolder(), f.getName()), new File(getDataFolder(), "language" + File.separator + f.getName()));
-				} catch (Exception ignored)
-				{
-				}
-			}
-
     try
     {
-      if (!new File(getDataFolder(), "language" + File.separator + "language_br.yml").exists())
+      if (!new File(getDataFolder(), "Lang.yml").exists())
       {
-        saveResource("language" + File.separator + "language_br.yml", false);
-        getLogger().info("Saved language_br.yml");
-      }
-    } catch (Exception e)
-    {
-    }
-    try
-    {
-      if (!new File(getDataFolder(), "language" + File.separator + "language_en.yml").exists())
-      {
-        saveResource("language" + File.separator + "language_en.yml", false);
-        getLogger().info("Saved language_en.yml");
+        saveResource("Lang.yml", false);
+        getLogger().info("Saved Lang.yml");
       }
     } catch (Exception e)
     {
@@ -109,8 +86,6 @@ public class Main extends JavaPlugin implements PluginMessageListener
     }
 
     Legendchat.getChannelManager().loadChannels();
-
-    language = getConfig().getString("language").trim();
 
     if (!setupPermissions())
     {

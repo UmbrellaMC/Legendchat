@@ -1,5 +1,6 @@
 package br.com.devpaulo.legendchat.api;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -37,7 +38,6 @@ public class Legendchat {
 	private static HashMap<String,String> formats = new HashMap<String,String>();
 	private static HashMap<String,String> pm_formats = new HashMap<String,String>();
 	private static HashMap<String,String> text_to_tag = new HashMap<String,String>();
-	private static String language = "en";
 	
 	private static ChannelManager cm = null;
 	private static PlayerManager pm = null;
@@ -155,10 +155,6 @@ public class Legendchat {
 		return pm_formats.get(format.toLowerCase());
 	}
 	
-	public static String getLanguage() {
-		return language;
-	}
-	
 	public static HashMap<String,String> textToTag() {
 		HashMap<String,String> h = new HashMap<String,String>();
 		h.putAll(text_to_tag);
@@ -196,7 +192,6 @@ public class Legendchat {
 		logToFileTime=fc.getInt("log_to_file.time",10);
 		if(logToFile)
 			lm.startSavingScheduler();
-		language=Main.language;
 		formats.clear();
 		pm_formats.clear();
 		for(String f : fc.getConfigurationSection("format").getKeys(false))
@@ -207,5 +202,7 @@ public class Legendchat {
 			String[] s = f.split(";");
 			text_to_tag.put(s[0].toLowerCase(), s[1]);
 		}
+
+		mm.loadMessages(new File(plugin.getDataFolder(), "Lang.yml"));
 	}
 }
