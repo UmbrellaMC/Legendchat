@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 
 import br.com.devpaulo.legendchat.Main;
 import br.com.devpaulo.legendchat.api.Legendchat;
@@ -20,7 +19,6 @@ import br.com.devpaulo.legendchat.api.events.ChatMessageEvent;
 import br.com.devpaulo.legendchat.channels.types.BungeecordChannel;
 import br.com.devpaulo.legendchat.channels.types.Channel;
 import br.com.devpaulo.legendchat.listeners.Listeners;
-import br.com.devpaulo.legendchat.listeners.Listeners_old;
 
 @SuppressWarnings("deprecation")
 public class ChannelUtils
@@ -32,30 +30,20 @@ public class ChannelUtils
       c.sendMessage(sender, message, "", false);
       return;
     }
-    if (!Legendchat.useAsyncChat())
+
+    HashSet<Player> p = new HashSet<Player>();
+    p.add(sender);
+    final AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, sender, "legendchat", p);
+    Listeners.addFakeChat(event, false);
+    Bukkit.getScheduler().runTaskAsynchronously(Legendchat.getPlugin(), new Runnable()
     {
-      PlayerChatEvent event = new PlayerChatEvent(sender, "legendchat");
-      Listeners_old.addFakeChat(event, false);
-      Bukkit.getPluginManager().callEvent(event);
-      c.sendMessage(sender, message, event.getFormat(), Listeners_old.getFakeChat(event));
-      Listeners_old.removeFakeChat(event);
-    }
-    else
-    {
-      HashSet<Player> p = new HashSet<Player>();
-      p.add(sender);
-      final AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(true, sender, "legendchat", p);
-      Listeners.addFakeChat(event, false);
-      Bukkit.getScheduler().runTaskAsynchronously(Legendchat.getPlugin(), new Runnable()
+      public void run()
       {
-        public void run()
-        {
-          Bukkit.getPluginManager().callEvent(event);
-          c.sendMessage(sender, message, event.getFormat(), Listeners.getFakeChat(event));
-          Listeners.removeFakeChat(event);
-        }
-      });
-    }
+        Bukkit.getPluginManager().callEvent(event);
+        c.sendMessage(sender, message, event.getFormat(), Listeners.getFakeChat(event));
+        Listeners.removeFakeChat(event);
+      }
+    });
   }
 
   public static void realMessage(Channel c, Player sender, String message, String bukkit_format, boolean cancelled)
@@ -395,12 +383,12 @@ public class ChannelUtils
     Set<Player> recipients = new HashSet<Player>();
 
     for (Player p : Bukkit.getOnlinePlayers())
-		{
-			if (p.hasPermission("legendchat.channel." + c.getName().toLowerCase() + ".chat") || p.hasPermission("legendchat.admin"))
-			{
-				recipients.add(p);
-			}
-		}
+    {
+      if (p.hasPermission("legendchat.channel." + c.getName().toLowerCase() + ".chat") || p.hasPermission("legendchat.admin"))
+      {
+        recipients.add(p);
+      }
+    }
 
     Set<Player> recipients2 = new HashSet<Player>();
     recipients2.addAll(recipients);

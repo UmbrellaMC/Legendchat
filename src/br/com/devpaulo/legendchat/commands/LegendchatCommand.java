@@ -6,7 +6,6 @@ import br.com.devpaulo.legendchat.channels.ChannelManager;
 import br.com.devpaulo.legendchat.channels.types.Channel;
 import br.com.devpaulo.legendchat.channels.types.PermanentChannel;
 import br.com.devpaulo.legendchat.listeners.Listeners;
-import br.com.devpaulo.legendchat.listeners.Listeners_old;
 import br.com.devpaulo.legendchat.players.PlayerManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -14,7 +13,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 public class LegendchatCommand implements CommandExecutor
@@ -60,21 +63,8 @@ public class LegendchatCommand implements CommandExecutor
         PlayerKickEvent.getHandlerList().unregister(lc);
         AsyncPlayerChatEvent.getHandlerList().unregister(lc);
         PlayerCommandPreprocessEvent.getHandlerList().unregister(lc);
-        try
-        {
-          Class.forName("org.bukkit.event.player.PlayerChatEvent");
-          PlayerChatEvent.getHandlerList().unregister(lc);
-        } catch (ClassNotFoundException e)
-        {
-        }
-        if (lc.getConfig().getBoolean("use_async_chat_event", true))
-        {
-          lc.getServer().getPluginManager().registerEvents(new Listeners(), lc);
-        }
-        else
-        {
-          lc.getServer().getPluginManager().registerEvents(new Listeners_old(), lc);
-        }
+
+        lc.getServer().getPluginManager().registerEvents(new Listeners(), lc);
         Legendchat.load(true);
         sender.sendMessage(Legendchat.getMessageManager().getMessage("message2"));
         return true;

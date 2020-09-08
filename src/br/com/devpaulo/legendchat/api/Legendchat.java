@@ -29,7 +29,6 @@ public class Legendchat {
 	private static boolean isBungeecordActive = false;
 	private static boolean isCensorActive = false;
 	private static boolean logToFile = false;
-	private static boolean useAsyncChat = false;
 	private static boolean maintainSpyMode = false;
 	private static int logToFileTime = 10;
 	private static Channel defaultChannel = null;
@@ -126,10 +125,6 @@ public class Legendchat {
 		return logToFile;
 	}
 	
-	public static boolean useAsyncChat() {
-		return useAsyncChat;
-	}
-	
 	public static boolean maintainSpyMode() {
 		return maintainSpyMode;
 	}
@@ -190,7 +185,6 @@ public class Legendchat {
 		blockRepeatedTags=fc.getBoolean("block_repeated_tags",true);
 		showNoOneHearsYou=fc.getBoolean("show_no_one_hears_you",true);
 		forceRemoveDoubleSpacesFromBukkit=fc.getBoolean("force_remove_double_spaces_from_bukkit",true);
-		useAsyncChat=fc.getBoolean("use_async_chat_event",true);
 		sendFakeMessageToChat=fc.getBoolean("send_fake_message_to_chat",true);
 		blockShortcutsWhenCancelled=fc.getBoolean("block_shortcuts_when_cancelled",true);
 		maintainSpyMode=fc.getBoolean("maintain_spy_mode",false);
