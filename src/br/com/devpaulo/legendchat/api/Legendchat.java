@@ -7,13 +7,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import br.com.devpaulo.legendchat.Main;
-import br.com.devpaulo.legendchat.afk.AfkManager;
 import br.com.devpaulo.legendchat.censor.CensorManager;
 import br.com.devpaulo.legendchat.channels.ChannelManager;
-import br.com.devpaulo.legendchat.channels.TemporaryChannelManager;
 import br.com.devpaulo.legendchat.channels.types.BungeecordChannel;
 import br.com.devpaulo.legendchat.channels.types.Channel;
-import br.com.devpaulo.legendchat.configurations.ConfigManager;
 import br.com.devpaulo.legendchat.delays.DelayManager;
 import br.com.devpaulo.legendchat.ignore.IgnoreManager;
 import br.com.devpaulo.legendchat.logs.LogManager;
@@ -52,9 +49,6 @@ public class Legendchat {
 	private static MuteManager mum = null;
 	private static CensorManager cem = null;
 	private static LogManager lm = null;
-	private static TemporaryChannelManager tcm = null;
-	private static ConfigManager com = null;
-	private static AfkManager afk = null;
 	
 	public static ChannelManager getChannelManager() {
 		return cm;
@@ -90,18 +84,6 @@ public class Legendchat {
 
 	public static LogManager getLogManager() {
 		return lm;
-	}
-	
-	public static TemporaryChannelManager getTemporaryChannelManager() {
-		return tcm;
-	}
-	
-	public static ConfigManager getConfigManager() {
-		return com;
-	}
-	
-	public static AfkManager getAfkManager() {
-		return afk;
 	}
 	
 	public static Channel getDefaultChannel() {
@@ -200,9 +182,6 @@ public class Legendchat {
 			mum=new MuteManager();
 			cem=new CensorManager();
 			lm=new LogManager();
-			tcm=new TemporaryChannelManager();
-			com=new ConfigManager();
-			afk=new AfkManager();
 			return;
 		}
 		FileConfiguration fc = Bukkit.getPluginManager().getPlugin("Legendchat").getConfig();
@@ -234,6 +213,5 @@ public class Legendchat {
 			String[] s = f.split(";");
 			text_to_tag.put(s[0].toLowerCase(), s[1]);
 		}
-		com.loadConfigs();
 	}
 }

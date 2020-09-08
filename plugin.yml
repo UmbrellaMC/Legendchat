@@ -22,16 +22,9 @@ commands:
       description: Reply a private message.
       usage: /<command> <message>
       aliases: r
-   afk:
-      description: Activate/Deactivate afk.
-      usage: /<command> [motive]
    ignore:
       description: Ignore a player.
       usage: /<command> <player>
-   tempchannel:
-      description: Temporary channel main command.
-      usage: /<command>
-      aliases: tc
    mute:
       description: Ignore a channel.
       usage: /<command> <channel>
