@@ -1,0 +1,33 @@
+name: Legendchat
+version: @version@
+main: br.com.devpaulo.legendchat.Legendchat
+api-version: 1.16
+load: STARTUP
+softdepend: [ Vault ]
+authors: [ SubZero0, GiverPlay ]
+description: Fork do Legendchat
+website: www.devpaulo.com.br
+
+commands:
+   legendchat:
+      description: Legendchat main command.
+      usage: /<command>
+      aliases: lc
+   channel:
+      description: Change your channel.
+      usage: /<command>
+      aliases: ch
+   tell:
+      description: Send a private message.
+      usage: /<command> <player> <message>
+      aliases: [msg, pm, t, whisper, w]
+   reply:
+      description: Reply a private message.
+      usage: /<command> <message>
+      aliases: r
+   ignore:
+      description: Ignore a player.
+      usage: /<command> <player>
+   mute:
+      description: Ignore a channel.
+      usage: /<command> <channel>
