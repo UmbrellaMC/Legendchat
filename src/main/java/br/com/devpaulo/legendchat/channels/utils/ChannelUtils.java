@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -258,18 +259,32 @@ public class ChannelUtils
       }
     }
     ChatMessageEvent e = new ChatMessageEvent(c, sender, message, LegendchatAPI.format(c.getFormat()), c.getFormat(), bukkit_format, recipients, tags, cancelled);
-    Bukkit.getPluginManager().callEvent(e);
+    
+    final boolean effectiveGastou = gastou;
+    
+    Bukkit.getScheduler().runTask(LegendchatAPI.getPlugin(), () -> {
+      Bukkit.getPluginManager().callEvent(e);
+      realMessage0(e, c, effectiveGastou);
+    });
+  }
+  
+  private static void realMessage0(ChatMessageEvent e, Channel c, boolean gastou)
+  {
     if (e.isCancelled())
     {
       return;
     }
-    sender = e.getSender();
-    message = e.getMessage();
+  
+    Player sender = e.getSender();
+    String message = e.getMessage();
+    
     if (LegendchatAPI.isCensorActive())
     {
       message = LegendchatAPI.getCensorManager().censorFunction(message);
     }
+    
     String completa = e.getFormat();
+    
     if (LegendchatAPI.blockRepeatedTags())
     {
       if (e.getTags().contains("prefix") && e.getTags().contains("groupprefix"))
@@ -287,18 +302,19 @@ public class ChannelUtils
         }
       }
     }
+    
     for (String n : e.getTags())
       completa = completa.replace("{" + n + "}", ChatColor.translateAlternateColorCodes('&', e.getTagValue(n)));
     completa = completa.replace("{msg}", translateAlternateChatColorsWithPermission(sender, message));
-
+  
     for (Player p : e.getRecipients())
       p.sendMessage(completa);
-
+  
     if (c.getDelayPerMessage() > 0 && !sender.hasPermission("legendchat.channel." + c.getName().toLowerCase() + ".nodelay") && !sender.hasPermission("legendchat.admin"))
     {
       LegendchatAPI.getDelayManager().addPlayerDelay(sender.getName(), c);
     }
-
+  
     if (c.getMaxDistance()!=0)
     {
       if (LegendchatAPI.showNoOneHearsYou())
@@ -328,13 +344,13 @@ public class ChannelUtils
         }
       }
     }
-
+  
     for (Player p : LegendchatAPI.getPlayerManager().getOnlineSpys())
       if (!e.getRecipients().contains(p))
       {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', LegendchatAPI.getFormat("spy").replace("{msg}", ChatColor.stripColor(completa))));
       }
-
+  
     if (gastou)
     {
       if (c.showCostMessage())
@@ -342,17 +358,17 @@ public class ChannelUtils
         sender.sendMessage(LegendchatAPI.getMessageManager().getMessage("message9").replace("@money", Double.toString(c.getCostPerMessage())));
       }
     }
-
+  
     if (LegendchatAPI.logToBukkit())
     {
       Bukkit.getConsoleSender().sendMessage(completa);
     }
-
+  
     if (LegendchatAPI.logToFile())
     {
       LegendchatAPI.getLogManager().addLogToCache(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', completa)));
     }
-
+  
     if (c instanceof BungeecordChannel)
     {
       if (LegendchatAPI.isBungeecordActive())
@@ -377,7 +393,7 @@ public class ChannelUtils
       }
     }
   }
-
+  
   public static void otherMessage(Channel c, String message)
   {
     Set<Player> recipients = new HashSet<Player>();
