@@ -46,8 +46,8 @@ public class Legendchat extends JavaPlugin implements PluginMessageListener
     
     getServer().getPluginManager().registerEvents(new Listeners(), this);
     
-    getServer().getMessenger().registerOutgoingPluginChannel(this, "Legendchat");
-    getServer().getMessenger().registerIncomingPluginChannel(this, "Legendchat", this);
+    getServer().getMessenger().registerOutgoingPluginChannel(this, "legendchat:bungee");
+    getServer().getMessenger().registerIncomingPluginChannel(this, "legendchat:bungee", this);
     
     File file = new File(getDataFolder(), "config.yml");
     if (!file.exists())
